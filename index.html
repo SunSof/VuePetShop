@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Vue Pet Shop</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <div class="b-bar">
+      <header>
+        <h1>{{sitename}}</h1>
+        <div class="cart">Products in cart:{{cartItemCount}}</div>
+      </header>
+    </div>
+    <div v-if="showProduct">
+      <div class="row b-product">
+        <div class="col-md-6">
+          <img :src="product.image" style="height: 30%;">
+        </div>
+        <div class="col col-md-6">
+          <h1>{{product.title}}</h1>
+          <p v-html="product.description"></p>
+          <p class="price">{{product.price| formatPrice}}</p>
+          <button class="default" @click="addToCart" v-if="canAddToCart">Add to cart</button>
+          <button class="disabled" v-else>Add to cart</button>
+          <button @click="showCheckout">Checkout>
+            <span class="glyphicon">{{cartItemCount}}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+    <div v-else>
+      <div class="col-md-6">
+        <h2>First Name:</h2>
+        <input v-model="order.firstName" class="form-control" />
+      </div>
+      <div class="col-md-6">
+        <h2>Last Name:</h2>
+        <input v-model="order.lastName" class="form-control" />
+      </div>
+      <div class="col-md-12 verify">
+        <div class="form-group">
+          <div class="col-md-12">
+            <h2>Address:</h2>
+            <input v-model="order.address" class="form-control" />
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-12">
+            <h2>City:</h2>
+            <input v-model="order.city" class="form-control" />
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-2">
+            <h2>State:</h2>
+            <select v-model="order.state" class="form-control">
+              <option disabled value="">State</option>
+              <option v-for="(state,key) in states" v-bind:value="state">{{key}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-12">
+            <h2>Zip/Poste Code:</h2>
+            <input v-model="order.zip" class="form-control" />
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-6 boxes">
+            <input type="checkbox" id="gift" value="true" v-bind:true-value="order.sendGift"
+              v-bind:false-value="order.dontSendGift" v-model="order.gift" />
+            <label for="gift">Ship As Gift?</lable>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-6 boxes">
+            <input type="radio" id="home" value="Home" v-bind:value="order.home" v-model="order.method" />
+            <label for="home">Home</lable>
+              <input type="radio" id="business" value="Business" v-bind:value="order.business" v-model="order.method" />
+              <label for="business">Business</lable>
+          </div>
+        </div>
+        <pre>
+        First Name: {{order.firstName}}
+        Last Name: {{order.lastName}}
+        Address:{{order.address}}
+        City:{{order.city}}
+        Zip:{{order.zip}}
+        State:{{order.state}}
+        Method:{{order.method}}
+        Gift:{{order.gift}}
+      </pre>
+        <div class="col-md-6">
+          <button @click="submitForm">Place Order</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <script>
+    var webstore = new Vue({
+      el: '#app',
+      data: {
+        sitename: "PetShop",
+        product: {
+          id: 1,
+          title: "Dog Chow, 14kg",
+          description: "Perfect <em> organic  food </em> for your dog," + " 14 kilograms bag",
+          price: 10000,
+          image: "img/1.jpg",
+          availableInventory: 5,
+        },
+        cart: [],
+        showProduct: true,
+        order: {
+          firstName: '',
+          lastName: '',
+          Address: '',
+          City: '',
+          Zip: '',
+          State: '',
+          Method: '',
+          home: 'Home Address',
+          business: 'Business Address',
+          gift: '',
+          sendGift: 'Send As A Gift',
+          dontSendGift: 'Do Not Send As A Gift'
+        },
+        states: {
+          AL: 'Alabama',
+          AR: 'Arizona',
+          CA: 'California',
+          NV: 'Nevada'
+        }
+      },
+      methods: {
+        addToCart() {
+          this.cart.push(this.product.id)
+        },
+        showCheckout() {
+          this.showProduct = this.showProduct ? false : true
+        },
+        submitForm() {
+          alert('Submitted')
+        }
+      },
+      computed: {
+        cartItemCount() {
+          return this.cart.length || 0
+        },
+        canAddToCart() {
+          return this.product.availableInventory > this.cartItemCount
+        }
+      },
+      filters: {
+        formatPrice(price) {
+          if (!parseInt(price)) { return " "; }
+          if (price > 99999) {
+            let priceString = (price / 100).toFixed(2);
+            let priceArray = priceString.split("").reverse();
+            let index = 3;
+            while (priceArray.length > index + 3) {
+              priceArray.splice(index + 3, 0, ",");
+              index += 4;
+            }
+            return "$" + priceArray.reverse().join("");
+          } else {
+            return "$" + (price / 100).toFixed(2);
+          }
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>
