@@ -30,8 +30,10 @@
           <p class="price">{{product.price| formatPrice}}</p>
           <button class="default" @click="addToCart" v-if="canAddToCart">Add to cart</button>
           <button class="disabled" v-else>Add to cart</button>
-          <span class="inventory-massage" v-if="product.availableInventory - cartItemCount < 5">Only
-            {{product.availableInventory - cartItemCount}} left!</span>
+          <span class="inventory-massage" v-if="product.availableInventory - cartItemCount === 0">All Out!</span>
+          <span class="inventory-massage" v-else-if="product.availableInventory - cartItemCount < 5">Only
+            {{product.availableInventory - cartItemCount}}</span>
+          <span class="inventory-massage" v-else>Buy Now!</span>
           <button @click="showCheckout">Checkout>
             <span class="glyphicon">{{cartItemCount}}</span>
           </button>
