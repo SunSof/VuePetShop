@@ -1,0 +1,49 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "title": "Dog Chow, 14kg",
+      "description": "Perfect <em> organic  food </em> for your dog, 14 kilograms bag",
+      "price": 10000,
+      "image": "img/1.jpg",
+      "availableInventory": 10,
+      "rating": 3
+    },
+    {
+      "id": 2,
+      "title": "Dog Bed",
+      "description": "Soft and comfortable bed for your pet",
+      "price": 200000,
+      "image": "img/dog_bed.jpg",
+      "availableInventory": 5,
+      "rating": 5
+    },
+    {
+      "id": 3,
+      "title": "Chappi, 8kg",
+      "description": "Balanced diet for your dog, 8 kilograms bag",
+      "price": 6500,
+      "image": "img/Chappi.png",
+      "availableInventory": 8,
+      "rating": 2
+    },
+    {
+      "id": 4,
+      "title": "Set of toys, 7 pieces",
+      "description": "A set of toys to make your dog happy",
+      "price": 3000,
+      "image": "img/toys.jpg",
+      "availableInventory": 2,
+      "rating": 4
+    },
+    {
+      "id": 5,
+      "title": "Cat's house",
+      "description": "Your cat will not remain indifferent",
+      "price": 10000,
+      "image": "img/house_for_cat.jpg",
+      "availableInventory": 6,
+      "rating": 4
+    }
+  ]
+}
